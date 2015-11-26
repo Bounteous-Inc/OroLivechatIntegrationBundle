@@ -1,0 +1,4 @@
+demac_oro_livechat_integration:
+    resource:     "@DemacMediaOroLivechatIntegrationBundle/Controller/LivechatController.php"
+    type:         annotation
+    prefix:       /livechat

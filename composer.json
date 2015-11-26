@@ -1,0 +1,13 @@
+{
+    "autoload": {
+        "psr-0": {
+            "DemacMedia\\Bundle\\OroLivechatIntegrationBundle": "src/"
+        }
+    },
+    "target-dir": "src/DemacMedia/Bundle/OroLivechatIntegrationBundle",
+    "require": {
+        "php": ">=5.4.9",
+        "livechat/api-client-php": "@dev"
+    },
+    "minimum-stability": "dev"
+}
