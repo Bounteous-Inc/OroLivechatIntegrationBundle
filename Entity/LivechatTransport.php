@@ -12,12 +12,12 @@ use Oro\Bundle\IntegrationBundle\Entity\Transport;
 /**
  * @ORM\Entity
  */
-class RestTransport extends Transport
+class LivechatTransport extends Transport
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="livechat_rest_api_user", type="string", length=255, nullable=false)
+     * @ORM\Column(name="api_user", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
      */
@@ -26,7 +26,7 @@ class RestTransport extends Transport
     /**
      * @var string
      *
-     * @ORM\Column(name="livechat_rest_api_key", type="string", length=255, nullable=false)
+     * @ORM\Column(name="api_key", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
      */
@@ -69,11 +69,13 @@ class RestTransport extends Transport
      */
     public function getSettingsBag()
     {
-        return new ParameterBag(
+        $parameterBag = new ParameterBag(
             [
                 'api_user' => $this->apiUser,
                 'api_key'  => $this->apiKey
             ]
         );
+
+        return $parameterBag;
     }
 }

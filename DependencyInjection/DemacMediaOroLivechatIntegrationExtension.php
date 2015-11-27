@@ -26,5 +26,6 @@ class DemacMediaOroLivechatIntegrationExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('oro/app.yml');
+        $loader->load('importexport.yml');
     }
 }

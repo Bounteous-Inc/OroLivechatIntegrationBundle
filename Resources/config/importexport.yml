@@ -1,0 +1,71 @@
+parameters:
+    # client factory
+    demacmedia.livechat.client_factory.class:                   DemacMedia\Bundle\OroLivechatIntegrationBundle\Model\LivechatClientFactory
+
+    # entities
+    demacmedia.livechat.chat.entity.class:                      DemacMedia\Bundle\OroLivechatIntegrationBundle\Entity\Chat
+
+    # connectors
+    demacmedia.livechat.provider.chat_connector.class:          DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\Connector\ChatConnector
+
+    # converter
+    demacmedia.livechat.importexport.data_converter.chat.class: DemacMedia\Bundle\OroLivechatIntegrationBundle\ImportExport\Converter\ChatDataConverter
+
+    # strategy
+    demacmedia.livechat.importexport.strategy.add_or_replace.class: DemacMedia\Bundle\OroLivechatIntegrationBundle\ImportExport\Strategy\ImportStrategy
+
+    # normalizers
+    demacmedia.livechat.importexport.normalizer.chat.class:     DemacMedia\Bundle\OroLivechatIntegrationBundle\ImportExport\Serializer\ChatNormalizer
+
+services:
+    ## client factory
+    demacmedia.livechat.client_factory:
+        class: %demacmedia.livechat.client_factory.class%
+
+    # Connectors
+    demacmedia.livechat.provider.chat_connector:
+        class: %demacmedia.livechat.provider.chat_connector.class%
+        arguments:
+          - @oro_importexport.context_registry
+          - @oro_integration.logger.strategy
+          - @oro_integration.provider.connector_context_mediator
+          - @doctrine
+        tags:
+            - { name: oro_integration.connector, type: chat, channel_type: live_chat }
+
+    # Data converters
+    demacmedia.livechat.importexport.data_converter.chat:
+        class: %demacmedia.livechat.importexport.data_converter.chat.class%
+
+    # Normalizers
+    demacmedia.livechat.importexport.normalizer.chat:
+        class: %demacmedia.livechat.importexport.normalizer.chat.class%
+        arguments:
+            - @oro_importexport.field.field_helper
+            - @doctrine
+        tags:
+            - { name: oro_importexport.normalizer }
+
+##### Disabled so far ############################################################
+#    demacmedia.livechat.importexport.normalizer.datetime:
+#        class: %demacmedia.livechat. importexport.normalizer.datetime.class%
+#        tags:
+#            - { name: oro_importexport.normalizer }
+##################################################################################
+
+    # Strategy
+    demacmedia.livechat.importexport.strategy.add_or_replace:
+        class: %demacmedia.livechat.importexport.strategy.add_or_replace.class%
+        parent: oro_importexport.strategy.configurable_add_or_replace
+        calls:
+            - [setLogger, [@oro_integration.logger.strategy]]
+
+    # Processors
+    demacmedia.livechat.processor.import_chat:
+        parent: oro_importexport.processor.import_abstract
+        calls:
+             - [setDataConverter, [@demacmedia.livechat.importexport.data_converter.chat]]
+             - [setStrategy, [@demacmedia.livechat.importexport.strategy.add_or_replace]]
+             - [setEntityName, [%demacmedia.livechat.chat.entity.class%]]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: %demacmedia.livechat.chat.entity.class%, alias: live_chat}

@@ -2,15 +2,18 @@
 
 namespace DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\Transport;
 
+use LiveChat\Api\Client as Client;
+
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Oro\Bundle\IntegrationBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
-use DemacMedia\Bundle\OroLivechatIntegrationBundle\Form\Type\RestTransportType;
-use DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\Transport\RestIterator;
+use DemacMedia\Bundle\OroLivechatIntegrationBundle\Form\Type\LivechatTransportType;
+use DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\Transport\LivechatChatIterator;
 use DemacMedia\Bundle\OroLivechatIntegrationBundle\Model\LivechatClientFactory;
 
-class RestTransport implements TransportInterface
+
+class LivechatTransport implements TransportInterface
 {
     const API_URL = 'api.livechatinc.com';
     const READ_BATCH_SIZE = 25;
@@ -39,15 +42,20 @@ class RestTransport implements TransportInterface
      */
     public function init(Transport $transportEntity)
     {
-        $apiUser = $transportEntity->getSettingsBag()->get('apiUser');
+        $apiUser = $transportEntity->getSettingsBag()->get('api_user');
         if (empty($apiUser)) {
-            throw new InvalidConfigurationException('API User wasn\'t set.');
+            throw new InvalidConfigurationException('API User isn\'t set.');
         }
-        $apiKey = $transportEntity->getSettingsBag()->get('apiKey');
+
+        $apiKey = $transportEntity->getSettingsBag()->get('api_key');
         if (empty($apiKey)) {
-            throw new InvalidConfigurationException('API Key wasn\'t set.');
+            throw new InvalidConfigurationException('API Key isn\'t set.');
         }
-        $this->client = $this->livechatClientFactory->createClient($apiUser, $apiKey);
+
+        $this->client = $this->livechatClientFactory->createClient(
+            $apiUser,
+            $apiKey
+        );
 
         return $this->client;
     }
@@ -88,7 +96,7 @@ class RestTransport implements TransportInterface
      */
     public function getSettingsFormType()
     {
-        return RestTransportType::NAME;
+        return LivechatTransportType::NAME;
     }
 
     /**
@@ -96,7 +104,7 @@ class RestTransport implements TransportInterface
      */
     public function getSettingsEntityFQCN()
     {
-        return 'DemacMedia\Bundle\OroLivechatIntegrationBundle\Entity\RestTransport';
+        return 'DemacMedia\Bundle\OroLivechatIntegrationBundle\Entity\LivechatTransport';
     }
 
     /**
@@ -118,8 +126,9 @@ class RestTransport implements TransportInterface
             $params['filter']['date_upd'] = sprintf(">[%s]", $lastUpdatedAt->format('Y-m-d H:i:s'));
         }
 
-        $chats = new RestIterator($this->getClient(), 'chats', $params);
+        $chats = new RestIterator($this->client, 'chats', $params);
 
         return $chats;
     }
+
 }

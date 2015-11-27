@@ -26,8 +26,8 @@ class DemacMediaOroLivechatIntegrationBundle implements Migration
     {
         $table = $schema->createTable('demacmedia_livechat_transport');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('livechat_rest_api_user', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('livechat_rest_api_key',  'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('api_user', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('api_key',  'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
     }
 }

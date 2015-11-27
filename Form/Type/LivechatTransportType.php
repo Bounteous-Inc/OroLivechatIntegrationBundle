@@ -6,19 +6,19 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\Transport\RestTransport;
+use DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\Transport\LivechatTransport;
 
-class RestTransportType extends AbstractType
+class LivechatTransportType extends AbstractType
 {
-    const NAME = 'demacmedia_livechat_form_rest_transport_type';
+    const NAME = 'demacmedia_livechat_form_livechat_transport_type';
 
-    /** @var RestTransport */
+    /** @var LivechatTransport */
     protected $transport;
 
     /**
-     * @param RestTransport $transport
+     * @param LivechatTransport $transport
      */
-    public function __construct(RestTransport $transport)
+    public function __construct(LivechatTransport $transport)
     {
         $this->transport = $transport;
     }

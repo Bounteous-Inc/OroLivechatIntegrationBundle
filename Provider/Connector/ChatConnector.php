@@ -58,9 +58,17 @@ class ChatConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
+    public function getExportJobName()
+    {
+        return 'livechat_chat_export';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getType()
     {
-        return 'chat';
+        return 'livechat_chat';
     }
 
     /**

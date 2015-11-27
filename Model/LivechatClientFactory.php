@@ -2,15 +2,17 @@
 
 namespace DemacMedia\Bundle\OroLivechatIntegrationBundle\Model;
 
-use LiveChat\Api\Client;
+use LiveChat\Api\Client as Client;
 
 class LivechatClientFactory
 {
     /**
      * @return Client
      */
-    public function createClient()
+    public function createClient($apiUser, $apiKey)
     {
-        return new Client();
+        $livechatClient = new Client($apiUser, $apiKey);
+
+        return $livechatClient;
     }
 }
