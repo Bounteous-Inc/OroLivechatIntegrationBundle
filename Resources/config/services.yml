@@ -16,7 +16,7 @@ services:
         tags:
             - { name: oro_integration.transport, type: rest, channel_type: live_chat }
 
-    demacmedia.livechat.form.type.livechat_transport.type:
+    demacmedia.livechat.form.transport.type:
         class: %demacmedia.livechat.form.type.livechat_transport.type.class%
         arguments:
             - @demacmedia.livechat.provider.livechat_transport

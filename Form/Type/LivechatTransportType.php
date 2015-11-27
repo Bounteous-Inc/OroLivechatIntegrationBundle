@@ -10,7 +10,7 @@ use DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\Transport\LivechatTr
 
 class LivechatTransportType extends AbstractType
 {
-    const NAME = 'demacmedia_livechat_form_livechat_transport_type';
+    const NAME = 'demacmedia_livechat_form_rest_transport_type';
 
     /** @var LivechatTransport */
     protected $transport;
