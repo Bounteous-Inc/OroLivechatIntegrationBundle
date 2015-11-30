@@ -35,9 +35,6 @@ class ChatDataConverter extends AbstractTableDataConverter
             'ended'             => 'chatEnded',
         ];
 
-        // $rules = array_flip($rules);
-        // var_dump($rules); die;
-
         return $rules;
     }
 

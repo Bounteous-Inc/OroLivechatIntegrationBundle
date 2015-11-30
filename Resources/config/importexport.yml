@@ -16,6 +16,7 @@ parameters:
 
     # normalizers
     demacmedia.livechat.importexport.normalizer.chat.class:     DemacMedia\Bundle\OroLivechatIntegrationBundle\ImportExport\Serializer\ChatNormalizer
+    demacmedia.livechat.importexport.normalizer.datetime.class:      DemacMedia\Bundle\OroLivechatIntegrationBundle\ImportExport\Serializer\DateTimeNormalizer
 
 services:
     ## client factory
@@ -46,12 +47,10 @@ services:
         tags:
             - { name: oro_importexport.normalizer }
 
-##### Disabled so far ############################################################
-#    demacmedia.livechat.importexport.normalizer.datetime:
-#        class: %demacmedia.livechat. importexport.normalizer.datetime.class%
-#        tags:
-#            - { name: oro_importexport.normalizer }
-##################################################################################
+    demacmedia.livechat.importexport.normalizer.datetime:
+        class: %demacmedia.livechat.importexport.normalizer.datetime.class%
+        tags:
+            - { name: oro_importexport.normalizer }
 
     # Strategy
     demacmedia.livechat.importexport.strategy.add_or_replace:

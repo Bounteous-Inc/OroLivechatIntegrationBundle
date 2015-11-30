@@ -31,7 +31,7 @@ class ImportStrategy extends ConfigurableAddOrReplaceStrategy implements
     protected function beforeProcessEntity($entity)
     {
         if ($this->logger) {
-            $this->logger->info('Syncing LiveChatInc Chat [origin_id=' . $entity->getRemoteId() . ']');
+            $this->logger->info('Syncing LiveChatInc chat_id=' . $entity->getChatId() . '');
         }
 
         return parent::beforeProcessEntity($entity);

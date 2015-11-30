@@ -28,7 +28,6 @@ class DemacMediaOroLivechatIntegrationBundle implements Migration
 
         $table->addColumn('id',         'integer', ['autoincrement' => true]);
         $table->addColumn('channel_id', 'integer', ['notnull' => false]);
-        $table->addColumn('remote_id',  'integer', ['unsigned' => true]);
 
         $table->addColumn('chat_type',                  'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('chat_id',                    'string', ['notnull' => true, 'length' => 32]);
@@ -52,7 +51,6 @@ class DemacMediaOroLivechatIntegrationBundle implements Migration
         $table->addColumn('createdAt', 'datetime', ['notnull' => false]);
         $table->addColumn('updatedAt', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['remote_id', 'channel_id'], 'unq_remote_id_channel_id');
 
         $table->addIndex(['chat_id'],           'IDX_LC_CHAT_ID', []);
         $table->addIndex(['chat_visitor_name'], 'IDX_LC_VISITOR_NAME', []);

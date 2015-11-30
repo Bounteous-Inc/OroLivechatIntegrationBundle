@@ -9,7 +9,7 @@ use Oro\Bundle\IntegrationBundle\Reader\EntityReaderById;
 
 class EntityReader extends EntityReaderById
 {
-    const REMOTE_ID_FIELD = 'remoteId';
+    const CHAT_ID_FIELD = 'chatId';
 
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ class EntityReader extends EntityReaderById
     {
         if (null !== $this->qb) {
             $this->qb->andWhere(
-                $this->qb->expr()->isNull('o.' . self::REMOTE_ID_FIELD)
+                $this->qb->expr()->isNull('o.' . self::CHAT_ID_FIELD)
             );
         }
 

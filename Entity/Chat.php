@@ -15,8 +15,7 @@ use OroCRM\Bundle\ContactBundle\Entity\Contact;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *      name="demacmedia_livechat_chat",
- *      uniqueConstraints={@ORM\UniqueConstraint(name="unq_remote_id_channel_id", columns={"remote_id", "channel_id"})}
+ *      name="demacmedia_livechat_chat"
  * )
  * @ORM\HasLifecycleCallbacks()
  * @Config(
@@ -34,26 +33,13 @@ class Chat
     /**
      * @var integer
      *
-     * @ConfigField(
-     *  defaultValues={
-     *      "importexport"={
-     *          "identity"=true
-     *      }
-     *  }
-     * )
-     * @ORM\Column(name="remote_id", type="integer", options={"unsigned"=true}, nullable=false)
-     */
-    protected $remoteId;
-
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    protected $remoteId;
 
     /**
      * @var Contact
@@ -224,23 +210,7 @@ class Chat
     protected $updatedAt;
 
 
-    /**
-     * @param int $remoteId
-     *
-     * @return $this
-     */
-    public function setRemoteId($remoteId)
-    {
-        $this->remoteId = $remoteId;
-    }
 
-    /**
-     * @return int
-     */
-    public function getRemoteId()
-    {
-        return $this->remoteId;
-    }
 
     /**
      * @return int
@@ -629,4 +599,24 @@ class Chat
     {
         return (string)$this->getTitle();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRemoteId()
+    {
+        return $this->remoteId;
+    }
+
+    /**
+     * @param mixed $remoteId
+     */
+    public function setRemoteId($remoteId)
+    {
+        $this->remoteId = $remoteId;
+    }
+
+
+
+
 }

@@ -12,120 +12,169 @@ abstract class AbstractLivechatIterator implements \Iterator
     protected $client;
 
     /**
-     * @var array
+     * @var bool
      */
-    protected $params;
+    protected $firstLoaded = false;
 
     /**
+     * Results of page data
+     *
+     * @var array
+     */
+    protected $rows = array();
+
+    /**
+     * Total count of items in response
+     *
+     * @var int
+     */
+    protected $totalCount = null;
+
+    /**
+     * Offset of current item in current page
+     *
+     * @var int
+     */
+    protected $offset = -1;
+
+    /**
+     * A position of a current item within the current page
+     *
+     * @var int
+     */
+    protected $position = -1;
+
+    /**
+     * Current item, populated from request response
+     *
      * @var mixed
      */
     protected $current = null;
 
     /**
-     * @var int
-     */
-    protected $page = -1;
-
-    /**
-     * @var int
-     */
-    protected $total = -1;
-
-
-    /**
      * @param Client $client
-     * @param array  $params
-     * @param int    $batchSize
      */
-    public function __construct(Client $client, $params = []) {
-        $this->client  = $client;
-        $defaultParams = [];
-        $this->params    = array_merge($defaultParams, $params);
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
     }
-
 
     /**
      * {@inheritdoc}
      */
-    public function rewind() {
-        $this->current = null;
-        $this->page    = -1;
-        $this->total   = -1;
-        $this->data    = null;
+    public function current()
+    {
+        return $this->current;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function next()
+    {
+        $this->offset++;
+
+        if (!isset($this->rows[$this->offset]) && !$this->loadNextPage()) {
+            $this->current = null;
+        } else {
+            $this->current  = $this->rows[$this->offset];
+        }
+        $this->position++;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function key()
+    {
+        return $this->position;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function valid()
+    {
+        if (!$this->firstLoaded) {
+            $this->rewind();
+        }
+
+        return null !== $this->current;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rewind()
+    {
+        $this->firstLoaded  = false;
+        $this->totalCount   = null;
+        $this->offset       = -1;
+        $this->position     = -1;
+        $this->current      = null;
+        $this->rows         = array();
 
         $this->next();
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function current() {
-        return $this->current;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function valid() {
-        return $this->total > 0 && $this->page < $this->total;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function next() {
-        $this->page += 1;
-
-        if ($this->valid() || ($this->total == -1)) {
-            $this->data  = $this->getResult([
-                'page' => ($this->page + 1)
-            ]);
-
-            $this->total = $this->data->total;
+    public function count()
+    {
+        if (!$this->firstLoaded) {
+            $this->rewind();
         }
 
-        $email = (isset($this->data->chats[$this->key()]->visitor->email))? $this->data->chats[$this->key()]->visitor->email: '';
-        $agent_name = (isset($this->data->chats[$this->key()]->agents->display_name))? $this->data->chats[$this->key()]->agents->display_name: '';
-        $agent_email = (isset($this->data->chats[$this->key()]->agents->display_email))? $this->data->chats[$this->key()]->agents->display_email: '';
-
-        $this->current = [
-            'type'              => $this->data->chats[$this->key()]->type,
-            'id'                => $this->data->chats[$this->key()]->id,
-            'visitor_name'      => $this->data->chats[$this->key()]->visitor->name,
-            'visitor_id'        => $this->data->chats[$this->key()]->visitor->id,
-            'visitor_ip'        => $this->data->chats[$this->key()]->visitor->ip,
-            'visitor_email'     => $email,
-            'visitor_city'      => $this->data->chats[$this->key()]->visitor->city,
-            'visitor_country'   => $this->data->chats[$this->key()]->visitor->country,
-            'visitor_country_code' => $this->data->chats[$this->key()]->visitor->country_code,
-            'timezone'          => $this->data->chats[$this->key()]->timezone,
-            'agents_display_name' => $agent_name,
-            'agents_email'      => $agent_email,
-            'duration'          => $this->data->chats[$this->key()]->duration,
-            'started'           => $this->data->chats[$this->key()]->started,
-            'started_timezone'  => $this->data->chats[$this->key()]->started_timestamp,
-            'ended_timezone'    => $this->data->chats[$this->key()]->ended_timestamp,
-            'ended'             => $this->data->chats[$this->key()]->ended,
-        ];
+        return $this->totalCount;
     }
 
-
     /**
-     * {@inheritdoc}
-     */
-    public function key() {
-        return $this->page;
-    }
-
-
-    /**
-     * @param array $params
+     * Attempts to load next page
      *
-     * @return array
+     * @return bool If page loaded successfully
      */
-    abstract protected function getResult($params);
-}
+    protected function loadNextPage()
+    {
+        $this->rows = array();
+        $this->offset = null;
 
+        $pageData = $this->loadPage($this->client);
+        $this->firstLoaded = true;
+        if ($pageData) {
+            $this->rows = $this->getRowsFromPageData($pageData);
+            $this->totalCount = $this->getTotalCountFromPageData($pageData, $this->totalCount);
+            if (null == $this->totalCount && is_array($this->rows)) {
+                $this->totalCount = count($this->rows);
+            }
+            $this->offset = 0;
+        }
+
+        return count($this->rows) > 0 && $this->totalCount;
+    }
+
+    /**
+     * Load page
+     *
+     * @param Client $client
+     * @return array|null
+     */
+    abstract protected function loadPage(Client $client);
+
+    /**
+     * Get rows from page data
+     *
+     * @param array $data
+     * @return array|null
+     */
+    abstract protected function getRowsFromPageData(array $data);
+
+    /**
+     * Get total count from page data
+     *
+     * @param array $data
+     * @param integer $previousValue
+     * @return array|null
+     */
+    abstract protected function getTotalCountFromPageData(array $data, $previousValue);
+}
