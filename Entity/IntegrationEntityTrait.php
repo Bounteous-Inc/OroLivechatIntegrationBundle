@@ -49,3 +49,4 @@ trait IntegrationEntityTrait
         return $this->channel ? $this->channel->getName() : null;
     }
 }
+

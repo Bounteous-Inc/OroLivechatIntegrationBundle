@@ -20,7 +20,7 @@ use OroCRM\Bundle\ContactBundle\Entity\Contact;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Chat extends BasePerson
+class Chat
 {
     use IntegrationEntityTrait;
 
@@ -38,6 +38,15 @@ class Chat extends BasePerson
      */
     protected $remoteId;
 
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
 
     /**
      * @var Contact
@@ -195,7 +204,7 @@ class Chat extends BasePerson
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
      */
     protected $createdAt;
 
@@ -203,7 +212,7 @@ class Chat extends BasePerson
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
      */
     protected $updatedAt;
 
@@ -225,6 +234,24 @@ class Chat extends BasePerson
     {
         return $this->remoteId;
     }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+
 
     /**
      * @param Contact $contact

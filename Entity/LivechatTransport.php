@@ -38,6 +38,8 @@ class LivechatTransport extends Transport
     public function setApiKey($apiKey)
     {
         $this->apiKey = $apiKey;
+        
+        return $this;
     }
 
     /**
@@ -54,6 +56,8 @@ class LivechatTransport extends Transport
     public function setApiUser($apiUser)
     {
         $this->apiUser = $apiUser;
+        
+        return $this;
     }
 
     /**
@@ -79,3 +83,4 @@ class LivechatTransport extends Transport
         return $parameterBag;
     }
 }
+

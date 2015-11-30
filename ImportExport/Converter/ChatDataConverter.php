@@ -15,19 +15,19 @@ class ChatDataConverter extends AbstractTableDataConverter
          * Array 'key' must be the name from LivechatInc field
          * Array 'value' must be the name of the field living in Oro "ENTITY" (NOT oro db field name)
          */
-        return [
+        $rules = [
             'type'              => 'chatType',
             'id'                => 'chatId',
             'visitor_name'      => 'chatVisitorName',
             'visitor_id'        => 'chatVisitorId',
             'visitor_ip'        => 'chatVisitorIp',
-            'visitor:email'     => 'chatVisitorEmail',
-            'visitor:city'      => 'chatVisitorCity',
-            'visitor:country'   => 'chatVisitorCountry',
-            'visitor:country_code' => 'chatVisitorCountryCode',
+            'visitor_email'     => 'chatVisitorEmail',
+            'visitor_city'      => 'chatVisitorCity',
+            'visitor_country'   => 'chatVisitorCountry',
+            'visitor_country_code' => 'chatVisitorCountryCode',
             'timezone'          => 'chatVisitorTimezone',
-            'agents:display_name' => 'chatAgentName',
-            'agents:email'      => 'chatAgentEmail',
+            'agents_display_name' => 'chatAgentName',
+            'agents_email'      => 'chatAgentEmail',
             'duration'          => 'chatDuration',
             'started'           => 'chatStarted',
             'started_timezone'  => 'chatStartedTimestamp',
@@ -35,8 +35,10 @@ class ChatDataConverter extends AbstractTableDataConverter
             'ended'             => 'chatEnded',
         ];
 
+        // $rules = array_flip($rules);
+        // var_dump($rules); die;
 
-
+        return $rules;
     }
 
     /**

@@ -36,7 +36,7 @@ class ChatConnector extends AbstractConnector
      */
     public function getLabel()
     {
-        return 'Chats'; // this string will be translated via symfony's translator
+        return 'Chats'; 
     }
 
     /**
@@ -91,3 +91,4 @@ class ChatConnector extends AbstractConnector
         return $status ? $status->getDate() : null;
     }
 }
+

@@ -1,4 +1,14 @@
 {
+    "name": "demacmedia/oro-livechat-integration-bundle",
+    "description": "LivechatInc Integration to use in OroCRM",
+    "homepage": "https://github.com/DemacMedia/OroLivechatIntegrationBundle.git",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Demac Media",
+            "homepage": "http://www.demacmedia.com"
+        }
+    ],
     "autoload": {
         "psr-0": {
             "DemacMedia\\Bundle\\OroLivechatIntegrationBundle": "src/"
@@ -7,7 +17,10 @@
     "target-dir": "src/DemacMedia/Bundle/OroLivechatIntegrationBundle",
     "require": {
         "php": ">=5.4.9",
+        "oro/crm": "1.x-dev",
         "livechat/api-client-php": "@dev"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true,
 }
+

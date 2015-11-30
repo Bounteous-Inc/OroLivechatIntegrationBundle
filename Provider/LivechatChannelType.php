@@ -8,12 +8,14 @@ use Oro\Bundle\IntegrationBundle\Provider\IconAwareIntegrationInterface;
 class LivechatChannelType implements ChannelInterface, IconAwareIntegrationInterface
 {
     const TYPE = 'livechat';
+
+
     /**
      * {@inheritdoc}
      */
     public function getLabel()
     {
-        return 'LivechatInc';
+        return 'demacmedia.livechat.channel_type.label';
     }
 
 
@@ -25,3 +27,4 @@ class LivechatChannelType implements ChannelInterface, IconAwareIntegrationInter
         return 'bundles/demacmediaorolivechatintegration/img/livechat-logo.png';
     }
 }
+

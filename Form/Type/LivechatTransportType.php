@@ -39,12 +39,12 @@ class LivechatTransportType extends AbstractType
         $builder->add(
             'apiUser',
             'text',
-            ['label' => 'Api User', 'required' => true]
+            ['label' => 'demacmedia.livechat.livechat_transport.api_user.label', 'required' => true]
         );
         $builder->add(
             'apiKey',
             'password',
-            ['label' => 'Api Key', 'required' => true]
+            ['label' => 'demacmedia.livechat.livechat_transport.api_key.label', 'required' => true]
         );
     }
 
@@ -56,3 +56,4 @@ class LivechatTransportType extends AbstractType
         $resolver->setDefaults(['data_class' => $this->transport->getSettingsEntityFQCN()]);
     }
 }
+

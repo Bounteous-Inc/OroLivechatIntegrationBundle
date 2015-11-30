@@ -1,0 +1,7 @@
+demacmedia:
+    livechat:
+        channel_type.label: LivechatInc
+        livechat_transport:
+            api_user.label: 'Api User'
+            api_key.label: 'Api Key'
+
