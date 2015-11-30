@@ -37,40 +37,5 @@ class ImportStrategy extends ConfigurableAddOrReplaceStrategy implements
         return parent::beforeProcessEntity($entity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process($entity)
-    {
-        $this->assertEnvironment($entity);
 
-        $this->cachedEntities = array();
-        $entity = $this->beforeProcessEntity($entity);
-        $entity = $this->processEntity($entity, false, true, $this->context->getValue('chats'));
-        $entity = $this->afterProcessEntity($entity);
-        $entity = $this->validateAndUpdateContext($entity);
-
-        return $entity;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function findExistingEntity($entity, array $searchContext = array())
-    {
-        $entityName = ClassUtils::getClass($entity);
-        $existingEntity = null;
-
-        // find by identity fields
-        if (!$searchContext || $this->databaseHelper->getIdentifier(current($searchContext))
-        ) {
-            $identityValues = $searchContext;
-            $identityValues += $this->fieldHelper->getIdentityValues($entity);
-            // add channel filter for finding existing entity
-            $identityValues += ['channel' => $entity->getChannel()];
-            $existingEntity = $this->findEntityByIdentityValues($entityName, $identityValues);
-        }
-
-        return $existingEntity;
-    }
 }

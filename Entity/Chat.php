@@ -19,6 +19,13 @@ use OroCRM\Bundle\ContactBundle\Entity\Contact;
  *      uniqueConstraints={@ORM\UniqueConstraint(name="unq_remote_id_channel_id", columns={"remote_id", "channel_id"})}
  * )
  * @ORM\HasLifecycleCallbacks()
+ * @Config(
+ *      defaultValues={
+ *          "entity"={
+ *              "icon"="icon-chat"
+ *          }
+ *      }
+ * )
  */
 class Chat
 {
