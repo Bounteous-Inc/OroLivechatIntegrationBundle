@@ -118,6 +118,14 @@ class Chat
     /**
      * @var string
      *
+     * @ORM\Column(name="chat_visitor_region", type="string", length=255, nullable=true)
+     */
+    protected $chatVisitorRegion;
+
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="chat_visitor_country", type="string", length=255, nullable=true)
      */
     protected $chatVisitorCountry;
@@ -614,6 +622,22 @@ class Chat
     public function setRemoteId($remoteId)
     {
         $this->remoteId = $remoteId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChatVisitorRegion()
+    {
+        return $this->chatVisitorRegion;
+    }
+
+    /**
+     * @param string $chatVisitorRegion
+     */
+    public function setChatVisitorRegion($chatVisitorRegion)
+    {
+        $this->chatVisitorRegion = $chatVisitorRegion;
     }
 
 

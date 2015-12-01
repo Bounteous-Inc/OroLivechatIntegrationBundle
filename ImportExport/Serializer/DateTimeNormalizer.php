@@ -11,7 +11,7 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     public function __construct()
     {
-        $this->livechatNormalizer = new BaseNormalizer(\DateTime::ISO8601, 'Y-m-d', 'H:i:s', 'UTC');
+        $this->livechatNormalizer = new BaseNormalizer('D, m/d/y H:i:s a', 'Y-m-d', 'H:i:s', 'UTC');
     }
 
     /**
@@ -37,7 +37,7 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         return $this->livechatNormalizer->supportsDenormalization($data, $type, $format, $context)
         && !empty($context[Serializer::PROCESSOR_ALIAS_KEY])
-        && strpos($context[Serializer::PROCESSOR_ALIAS_KEY], 'livechat') !== false;
+        && strpos($context[Serializer::PROCESSOR_ALIAS_KEY], 'live_chat') !== false;
     }
 
     /**
@@ -47,6 +47,6 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         return $this->livechatNormalizer->supportsNormalization($data, $format, $context)
         && !empty($context[Serializer::PROCESSOR_ALIAS_KEY])
-        && strpos($context[Serializer::PROCESSOR_ALIAS_KEY], 'livechat') !== false;
+        && strpos($context[Serializer::PROCESSOR_ALIAS_KEY], 'live_chat') !== false;
     }
 }

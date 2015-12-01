@@ -2,6 +2,7 @@
 
 namespace DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\Transport;
 
+use DemacMedia\Bundle\OroLivechatIntegrationBundle\ImportExport\Serializer\DateTimeNormalizer;
 use LiveChat\Api\Client;
 
 
@@ -40,7 +41,6 @@ class LivechatChatIterator extends AbstractLivechatIterator
      */
     protected function loadPage(Client $client)
     {
-        $this->params['page'] = $this->params['limit'];
         $data = $this->getResult($this->params, $this->resource);
 
         return $data;
@@ -55,7 +55,33 @@ class LivechatChatIterator extends AbstractLivechatIterator
         if (isset($data) && is_array($data)) {
             $rows = [];
             foreach($data as $row) {
-                $rows[] = (array) $row;
+                $rowArray = (array) $row;
+                $rowArray['custom_visitor_ip'] = $rowArray['visitor']->ip;
+                $rowArray['custom_visitor_city'] = $rowArray['visitor']->city;
+                $rowArray['custom_visitor_region'] = $rowArray['visitor']->region;
+                $rowArray['custom_visitor_country'] = $rowArray['visitor']->country;
+                $rowArray['custom_visitor_country_code'] = $rowArray['visitor']->country_code;
+                $rowArray['custom_visitor_timezone'] = $rowArray['visitor']->timezone;
+
+                if(isset($rowArray['agents'][0]->display_name)) {
+                    $rowArray['custom_agent_name'] = $rowArray['agents'][0]->display_name;
+                } else {
+                    $rowArray['custom_agent_name'] = '';
+                }
+
+                if(isset($rowArray['agents'][0]->display_email)) {
+                    $rowArray['custom_agent_email'] = $rowArray['agents'][0]->email;
+                } else {
+                    $rowArray['custom_agent_email'] = '';
+                }
+
+                if(isset($rowArray['prechat_survey'][1]->value)) {
+                    $rowArray['custom_visitor_email'] = $rowArray['prechat_survey'][1]->value;
+                } else {
+                    $rowArray['custom_visitor_email'] = '';
+                }
+
+                $rows[] = $rowArray;
             }
             return $rows;
         } else {
