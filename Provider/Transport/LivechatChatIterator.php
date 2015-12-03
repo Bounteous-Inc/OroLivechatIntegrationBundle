@@ -39,7 +39,7 @@ class LivechatChatIterator extends AbstractLivechatIterator
     /**
      * {@inheritdoc}
      */
-    protected function loadPage(Client $client)
+    protected function loadPage(Client $client, $params)
     {
         $data = $this->getResult($this->params, $this->resource);
 
@@ -50,36 +50,21 @@ class LivechatChatIterator extends AbstractLivechatIterator
     /**
      * {@inheritdoc}
      */
-    protected function getRowsFromPageData(array $data = [])
+    protected function getRowsFromPageData($data = [])
     {
         if (isset($data) && is_array($data)) {
             $rows = [];
             foreach($data as $row) {
                 $rowArray = (array) $row;
-                $rowArray['custom_visitor_ip'] = $rowArray['visitor']->ip;
-                $rowArray['custom_visitor_city'] = $rowArray['visitor']->city;
-                $rowArray['custom_visitor_region'] = $rowArray['visitor']->region;
-                $rowArray['custom_visitor_country'] = $rowArray['visitor']->country;
-                $rowArray['custom_visitor_country_code'] = $rowArray['visitor']->country_code;
-                $rowArray['custom_visitor_timezone'] = $rowArray['visitor']->timezone;
-
-                if(isset($rowArray['agents'][0]->display_name)) {
-                    $rowArray['custom_agent_name'] = $rowArray['agents'][0]->display_name;
-                } else {
-                    $rowArray['custom_agent_name'] = '';
-                }
-
-                if(isset($rowArray['agents'][0]->display_email)) {
-                    $rowArray['custom_agent_email'] = $rowArray['agents'][0]->email;
-                } else {
-                    $rowArray['custom_agent_email'] = '';
-                }
-
-                if(isset($rowArray['prechat_survey'][1]->value)) {
-                    $rowArray['custom_visitor_email'] = $rowArray['prechat_survey'][1]->value;
-                } else {
-                    $rowArray['custom_visitor_email'] = '';
-                }
+                $rowArray['custom_visitor_ip']           = isset($rowArray['visitor']->ip)? $rowArray['visitor']->ip: '';
+                $rowArray['custom_visitor_city']         = isset($rowArray['visitor']->city)? $rowArray['visitor']->city: '';
+                $rowArray['custom_visitor_region']       = isset($rowArray['visitor']->region)? $rowArray['visitor']->region: '';
+                $rowArray['custom_visitor_country']      = isset($rowArray['visitor']->country)? $rowArray['visitor']->region: '';
+                $rowArray['custom_visitor_country_code'] = isset($rowArray['visitor']->country_code)? $rowArray['visitor']->country_code: '';
+                $rowArray['custom_visitor_timezone']     = isset($rowArray['visitor']->timezone)? $rowArray['visitor']->timezone: '';
+                $rowArray['custom_agent_name']           = isset($rowArray['agents'][0]->display_name)? $rowArray['agents'][0]->display_name: '';
+                $rowArray['custom_agent_email']          = isset($rowArray['agents'][0]->email)? $rowArray['agents'][0]->email: '';
+                $rowArray['custom_visitor_email']        = isset($rowArray['prechat_survey'][1]->value)? $rowArray['prechat_survey'][1]->value: '';
 
                 $rows[] = $rowArray;
             }
@@ -106,13 +91,12 @@ class LivechatChatIterator extends AbstractLivechatIterator
     /**
      * {@inheritdoc}
      */
-    protected function getResult($params, $resource)
+    protected function getResult($params, $resource = 'chats')
     {
         $results = $this->client->$resource->get(
             array_merge($this->params, $params)
         );
 
-        return $results->$resource;
+        return $results;
     }
 }
-

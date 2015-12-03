@@ -84,9 +84,17 @@ class ChatConnector extends AbstractConnector
      */
     protected function getLastSyncDate()
     {
-        $channel = $this->contextMediator->getChannel($this->getContext());
-        $status  = $this->registry->getRepository('OroIntegrationBundle:Channel')
-            ->getLastStatusForConnector($channel, $this->getType(), Status::STATUS_COMPLETED);
+        $channel = $this->contextMediator->getChannel(
+            $this->getContext()
+        );
+
+        $status  = $this->registry
+            ->getRepository('OroIntegrationBundle:Channel')
+            ->getLastStatusForConnector(
+                $channel,
+                $this->getType(),
+                Status::STATUS_COMPLETED
+            );
 
         return $status ? $status->getDate() : null;
     }

@@ -43,10 +43,11 @@ class DemacMediaOroLivechatIntegrationBundle implements Migration
         $table->addColumn('chat_agent_name', 'string',  ['notnull' => false]);
         $table->addColumn('chat_agent_email', 'string', ['notnull' => false]);
         $table->addColumn('chat_duration',              'integer', ['notnull' => false, 'unsigned' => true]);
-        $table->addColumn('chat_started', 'datetime',     ['notnull' => false]);
+        $table->addColumn('chat_started',               'datetime',['notnull' => false]);
         $table->addColumn('chat_started_timestamp',     'integer', ['notnull' => false, 'unsigned' => true]);
         $table->addColumn('chat_ended_timestamp',       'integer', ['notnull' => false, 'unsigned' => true]);
-        $table->addColumn('chat_ended', 'datetime',       ['notnull' => false]);
+        $table->addColumn('chat_ended',                 'datetime',['notnull' => false]);
+        $table->addColumn('chat_start_url',             'string',  ['notnull' => false]);
 
         $table->addColumn('createdAt', 'datetime', ['notnull' => false]);
         $table->addColumn('updatedAt', 'datetime', ['notnull' => false]);
@@ -69,6 +70,7 @@ class DemacMediaOroLivechatIntegrationBundle implements Migration
         $table->addIndex(['chat_started_timestamp'], 'IDX_LC_STARTED_TIMESTAMP', []);
         $table->addIndex(['chat_ended_timestamp'], 'IDX_LC_ENDED_TIMESTAMP', []);
         $table->addIndex(['chat_ended'],        'IDX_LC_ENDED', []);
+        $table->addIndex(['chat_start_url'],        'IDX_LC_START_URL', []);
 
         $table = $schema->getTable('demacmedia_livechat_chat');
         $table->addForeignKeyConstraint(

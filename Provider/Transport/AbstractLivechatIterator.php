@@ -49,13 +49,23 @@ abstract class AbstractLivechatIterator implements \Iterator
      *
      * @var mixed
      */
+
+    protected $params = 0;
+
     protected $current = null;
+
+    protected $totalPages = 0;
+
+    protected $totalChats = 0;
+
+    protected $currentPage = 388;
+
+    protected $currentChat = 0;
 
     /**
      * @param Client $client
      */
-    public function __construct(Client $client)
-    {
+    public function __construct(Client $client){
         $this->client = $client;
     }
 
@@ -138,19 +148,33 @@ abstract class AbstractLivechatIterator implements \Iterator
     {
         $this->rows = array();
         $this->offset = null;
+        $this->currentPage++;
 
-        $pageData = $this->loadPage($this->client);
+        $this->params = [
+            'page' => $this->currentPage
+        ];
+
+        $pageData = $this->loadPage($this->client, $this->params);
+
+        $this->totalPages = $pageData->pages;
+        $this->totalChats = $pageData->total;
+
+        echo PHP_EOL . "Loading page=[{$this->currentPage} of {$this->totalPages}] " .PHP_EOL;
+
         $this->firstLoaded = true;
         if ($pageData) {
-            $this->rows = $this->getRowsFromPageData($pageData);
-            $this->totalCount = $this->getTotalCountFromPageData($pageData, $this->totalCount);
+
+            $this->rows = $this->getRowsFromPageData($pageData->chats);
+            $this->totalCount = $this->getTotalCountFromPageData($pageData->chats, $this->totalCount);
             if (null == $this->totalCount && is_array($this->rows)) {
                 $this->totalCount = count($this->rows);
             }
             $this->offset = 0;
         }
 
-        return count($this->rows) > 0 && $this->totalCount;
+        $return = count($this->rows) > 0 && $this->totalCount;
+
+        return $return;
     }
 
     /**
@@ -159,7 +183,7 @@ abstract class AbstractLivechatIterator implements \Iterator
      * @param Client $client
      * @return array|null
      */
-    abstract protected function loadPage(Client $client);
+    abstract protected function loadPage(Client $client, $params);
 
     /**
      * Get rows from page data
@@ -167,7 +191,7 @@ abstract class AbstractLivechatIterator implements \Iterator
      * @param array $data
      * @return array|null
      */
-    abstract protected function getRowsFromPageData(array $data);
+    abstract protected function getRowsFromPageData($data);
 
     /**
      * Get total count from page data

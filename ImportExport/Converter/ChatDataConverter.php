@@ -11,29 +11,26 @@ class ChatDataConverter extends AbstractTableDataConverter
      */
     protected function getHeaderConversionRules()
     {
-        /*
-         * Array 'key' must be the name from LivechatInc field
-         * Array 'value' must be the name of the field living in Oro "ENTITY" (NOT oro db field name)
-         */
         $rules = [
-            'type'              => 'chatType',
-            'id'                => 'chatId',
-            'visitor_name'      => 'chatVisitorName',
-            'visitor_id'        => 'chatVisitorId',
-            'custom_visitor_ip'        => 'chatVisitorIp',
-            'custom_visitor_email'     => 'chatVisitorEmail',
-            'custom_visitor_region'    => 'chatVisitorRegion',
-            'custom_visitor_city'      => 'chatVisitorCity',
-            'custom_visitor_country'   => 'chatVisitorCountry',
-            'custom_visitor_country_code' => 'chatVisitorCountryCode',
-            'custom_visitor_timezone'  => 'chatVisitorTimezone',
-            'custom_agent_name' => 'chatAgentName',
-            'custom_agent_email'      => 'chatAgentEmail',
-            'duration'          => 'chatDuration',
-            'started'           => 'chatStarted',
-            'started_timestamp'  => 'chatStartedTimestamp',
-            'ended_timestamp'    => 'chatEndedTimestamp',
-            'ended'             => 'chatEnded',
+            'type'                          => 'chatType',
+            'id'                            => 'chatId',
+            'visitor_name'                  => 'chatVisitorName',
+            'visitor_id'                    => 'chatVisitorId',
+            'custom_visitor_ip'             => 'chatVisitorIp',
+            'custom_visitor_email'          => 'chatVisitorEmail',
+            'custom_visitor_region'         => 'chatVisitorRegion',
+            'custom_visitor_city'           => 'chatVisitorCity',
+            'custom_visitor_country'        => 'chatVisitorCountry',
+            'custom_visitor_country_code'   => 'chatVisitorCountryCode',
+            'custom_visitor_timezone'       => 'chatVisitorTimezone',
+            'custom_agent_name'             => 'chatAgentName',
+            'custom_agent_email'            => 'chatAgentEmail',
+            'duration'                      => 'chatDuration',
+            'started'                       => 'chatStarted',
+            'started_timestamp'             => 'chatStartedTimestamp',
+            'ended_timestamp'               => 'chatEndedTimestamp',
+            'ended'                         => 'chatEnded',
+            'chat_start_url'                => 'chatStartUrl'
         ];
 
         return $rules;
@@ -52,6 +49,6 @@ class ChatDataConverter extends AbstractTableDataConverter
      */
     public function convertToExportFormat(array $exportedRecord, $skipNullValues = true)
     {
-        throw new \Exception('Export not implemented yet!');
+        throw new \Exception('Export not implemented yet.');
     }
 }

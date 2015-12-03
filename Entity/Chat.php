@@ -71,6 +71,15 @@ class Chat
      * @var string
      *
      * @ORM\Column(name="chat_id", type="string", length=32, nullable=false)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Chat ID",
+     *              "plural_label"="Chats ID",
+     *              "description"="Chat ID"
+     *          }
+     *      }
+     * )
      */
     protected $chatId;
 
@@ -78,7 +87,16 @@ class Chat
     /**
      * @var string
      *
-     * @ORM\Column(name="chat_visitor_name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="chat_visitor_name", type="string", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Visitor Name",
+     *              "plural_label"="Visitors Name",
+     *              "description"="Visitor Name"
+     *          }
+     *      }
+     * )
      */
     protected $chatVisitorName;
 
@@ -87,6 +105,15 @@ class Chat
      * @var string
      *
      * @ORM\Column(name="chat_visitor_id", type="string", length=32, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Visitor ID",
+     *              "plural_label"="Visitors ID",
+     *              "description"="Visitor ID"
+     *          }
+     *      }
+     * )
      */
     protected $chatVisitorId;
 
@@ -95,6 +122,15 @@ class Chat
      * @var string
      *
      * @ORM\Column(name="chat_visitor_ip", type="string", length=32, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Visitor IP",
+     *              "plural_label"="Visitors IP",
+     *              "description"="Visitor IP"
+     *          }
+     *      }
+     * )
      */
     protected $chatVisitorIp;
 
@@ -102,7 +138,16 @@ class Chat
     /**
      * @var string
      *
-     * @ORM\Column(name="chat_visitor_email", type="string", length=255, nullable=true)
+     * @ORM\Column(name="chat_visitor_email", type="string", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Visitor Email",
+     *              "plural_label"="Visitors Email",
+     *              "description"="Visitor Email"
+     *          }
+     *      }
+     * )
      */
     protected $chatVisitorEmail;
 
@@ -110,7 +155,16 @@ class Chat
     /**
      * @var string
      *
-     * @ORM\Column(name="chat_visitor_city", type="string", length=255, nullable=true)
+     * @ORM\Column(name="chat_visitor_city", type="string", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Visitor City",
+     *              "plural_label"="Visitors City",
+     *              "description"="Visitor City"
+     *          }
+     *      }
+     * )
      */
     protected $chatVisitorCity;
 
@@ -118,7 +172,16 @@ class Chat
     /**
      * @var string
      *
-     * @ORM\Column(name="chat_visitor_region", type="string", length=255, nullable=true)
+     * @ORM\Column(name="chat_visitor_region", type="string", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Visitor Region",
+     *              "plural_label"="Visitors Region",
+     *              "description"="Visitor Region"
+     *          }
+     *      }
+     * )
      */
     protected $chatVisitorRegion;
 
@@ -126,7 +189,16 @@ class Chat
     /**
      * @var string
      *
-     * @ORM\Column(name="chat_visitor_country", type="string", length=255, nullable=true)
+     * @ORM\Column(name="chat_visitor_country", type="string", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Visitor Country",
+     *              "plural_label"="Visitors Country",
+     *              "description"="Visitor Country"
+     *          }
+     *      }
+     * )
      */
     protected $chatVisitorCountry;
 
@@ -135,6 +207,15 @@ class Chat
      * @var string
      *
      * @ORM\Column(name="chat_visitor_country_code", type="string", length=4, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Visitor Country Code",
+     *              "plural_label"="Visitors Country Code",
+     *              "description"="Visitor Country Code"
+     *          }
+     *      }
+     * )
      */
     protected $chatVisitorCountryCode;
 
@@ -143,6 +224,15 @@ class Chat
      * @var string
      *
      * @ORM\Column(name="chat_visitor_timezone", type="string", length=64, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Visitor Timezone",
+     *              "plural_label"="Visitors Timezone",
+     *              "description"="Visitor Timezone"
+     *          }
+     *      }
+     * )
      */
     protected $chatVisitorTimezone;
 
@@ -151,6 +241,15 @@ class Chat
      * @var string
      *
      * @ORM\Column(name="chat_agent_name", type="string", length=255, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Agent Name",
+     *              "plural_label"="Agents Name",
+     *              "description"="Agent Name"
+     *          }
+     *      }
+     * )
      */
     protected $chatAgentName;
 
@@ -159,6 +258,15 @@ class Chat
      * @var string
      *
      * @ORM\Column(name="chat_agent_email", type="string", length=255, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Agent Email",
+     *              "plural_label"="Agents Email",
+     *              "description"="Agent Email"
+     *          }
+     *      }
+     * )
      */
     protected $chatAgentEmail;
 
@@ -167,6 +275,15 @@ class Chat
      * @var integer
      *
      * @ORM\Column(name="chat_duration", type="integer", options={"unsigned"=true}, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Chat Duration",
+     *              "plural_label"="Chat Duration",
+     *              "description"="Chat Duration"
+     *          }
+     *      }
+     * )
      */
     protected $chatDuration;
 
@@ -175,6 +292,15 @@ class Chat
      * @var \DateTime
      *
      * @ORM\Column(name="chat_started", type="datetime", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Chat Started",
+     *              "plural_label"="Chats Started",
+     *              "description"="Chat Started"
+     *          }
+     *      }
+     * )
      */
     protected $chatStarted;
 
@@ -182,6 +308,15 @@ class Chat
      * @var integer
      *
      * @ORM\Column(name="chat_started_timestamp", type="integer", options={"unsigned"=true}, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Chat Started Timestamp",
+     *              "plural_label"="Chats Started Timestamp",
+     *              "description"="Chat Started Timestamp"
+     *          }
+     *      }
+     * )
      */
     protected $chatStartedTimestamp;
 
@@ -190,6 +325,15 @@ class Chat
      * @var integer
      *
      * @ORM\Column(name="chat_ended_timestamp", type="integer", options={"unsigned"=true}, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Chat Ended Timestamp",
+     *              "plural_label"="Chat Ended Timestamp",
+     *              "description"="Chat Ended Timestamp"
+     *          }
+     *      }
+     * )
      */
     protected $chatEndedTimestamp;
 
@@ -198,8 +342,34 @@ class Chat
      * @var \DateTime
      *
      * @ORM\Column(name="chat_ended", type="datetime", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Chat Ended",
+     *              "plural_label"="Chats Ended",
+     *              "description"="Chat Ended"
+     *          }
+     *      }
+     * )
      */
     protected $chatEnded;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="chat_start_url", type="string", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="Chat Start URL",
+     *              "plural_label"="Chats Start URL",
+     *              "description"="Chat Start URL"
+     *          }
+     *      }
+     * )
+     */
+    protected $chatStartUrl;
 
 
     /**
@@ -639,8 +809,4 @@ class Chat
     {
         $this->chatVisitorRegion = $chatVisitorRegion;
     }
-
-
-
-
 }
