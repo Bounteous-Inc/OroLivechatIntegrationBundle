@@ -4,6 +4,8 @@ namespace DemacMedia\Bundle\OroLivechatIntegrationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\BusinessEntitiesBundle\Entity\BasePerson;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
@@ -14,6 +16,7 @@ use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
 /**
  * @ORM\Entity
+ * @UniqueEntity("chatId")
  * @ORM\Table(
  *      name="demacmedia_livechat_chat"
  * )

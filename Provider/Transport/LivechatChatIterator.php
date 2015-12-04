@@ -4,7 +4,7 @@ namespace DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\Transport;
 
 use DemacMedia\Bundle\OroLivechatIntegrationBundle\ImportExport\Serializer\DateTimeNormalizer;
 use LiveChat\Api\Client;
-
+use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector;
 
 class LivechatChatIterator extends AbstractLivechatIterator
 {

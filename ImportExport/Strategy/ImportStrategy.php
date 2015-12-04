@@ -31,9 +31,24 @@ class ImportStrategy extends ConfigurableAddOrReplaceStrategy implements
     protected function beforeProcessEntity($entity)
     {
         if ($this->logger) {
-            $this->logger->info('Syncing LiveChatInc chat_id=' . $entity->getChatId() . '');
+            $this->logger->info('Syncing LiveChatInc chat_id=' .$entity->getChatId());
         }
 
+        $chatClass = 'DemacMedia\Bundle\OroLivechatIntegrationBundle\Entity\Chat';
+
+        // if the following returns true, that means the data already exist
+        $dataAlreadyExist = (bool) parent::findEntityByIdentityValues($chatClass, [
+            'chatId' => $entity->getChatId()
+        ]);
+
         return parent::beforeProcessEntity($entity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function afterProcessEntity($entity)
+    {
+        return parent::afterProcessEntity($entity);
     }
 }

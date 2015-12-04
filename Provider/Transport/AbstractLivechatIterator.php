@@ -74,7 +74,9 @@ abstract class AbstractLivechatIterator implements \Iterator
      */
     public function current()
     {
-        return $this->current;
+        $current = $this->current;
+
+        return $current;
     }
 
     /**
@@ -109,7 +111,14 @@ abstract class AbstractLivechatIterator implements \Iterator
             $this->rewind();
         }
 
-        return null !== $this->current;
+        $return = (null !== $this->current);
+
+        if (!$return) {
+            // Finished!
+
+        }
+
+        return $return;
     }
 
     /**
@@ -177,6 +186,11 @@ abstract class AbstractLivechatIterator implements \Iterator
         return $return;
     }
 
+    protected function getCurrentPage()
+    {
+        return $this->currentPage;
+    }
+
     /**
      * Load page
      *
@@ -201,4 +215,5 @@ abstract class AbstractLivechatIterator implements \Iterator
      * @return array|null
      */
     abstract protected function getTotalCountFromPageData(array $data, $previousValue);
+
 }

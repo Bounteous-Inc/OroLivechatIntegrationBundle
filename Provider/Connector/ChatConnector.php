@@ -10,10 +10,15 @@ use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector;
 use Oro\Bundle\IntegrationBundle\Logger\LoggerStrategy;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
 
+
 class ChatConnector extends AbstractConnector
 {
     /** @var RegistryInterface */
     protected $registry;
+
+    protected $contextMediator;
+
+    protected $contextRegistry;
 
     /**
      * @param ContextRegistry          $contextRegistry
@@ -29,6 +34,9 @@ class ChatConnector extends AbstractConnector
     {
         parent::__construct($contextRegistry, $logger, $contextMediator);
         $this->registry = $registry;
+
+        $this->contextMediator = $contextMediator;
+        $this->contextRegistry = $contextRegistry;
     }
 
     /**
@@ -36,7 +44,7 @@ class ChatConnector extends AbstractConnector
      */
     public function getLabel()
     {
-        return 'Chats'; 
+        return 'Chats';
     }
 
     /**
@@ -76,7 +84,13 @@ class ChatConnector extends AbstractConnector
      */
     protected function getConnectorSource()
     {
+        $lastChatEndedTimestampIntegrated = $this->getLastChatEndedTimestampIntegrated();
         return $this->transport->getChats($this->getLastSyncDate());
+    }
+
+    protected function getLastChatEndedTimestampIntegrated()
+    {
+
     }
 
     /**
@@ -88,6 +102,12 @@ class ChatConnector extends AbstractConnector
             $this->getContext()
         );
 
+        $completed = Status::STATUS_COMPLETED;
+
+        $data = $this->registry
+            ->getRepository('OroIntegrationBundle:Channel')
+            ->
+
         $status  = $this->registry
             ->getRepository('OroIntegrationBundle:Channel')
             ->getLastStatusForConnector(
@@ -96,7 +116,27 @@ class ChatConnector extends AbstractConnector
                 Status::STATUS_COMPLETED
             );
 
-        return $status ? $status->getDate() : null;
+        $return = $status ? $status->getDate() : null;
+
+        return $return;
+
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function read()
+    {
+        $item = parent::read();
+
+        if (null !== $item && !$this->getSourceIterator()->valid()) {
+            $invalidEntries = (int) self::getContext()->getErrorEntriesCount();
+            if ($invalidEntries < 1) {
+                $this->addStatusData('endedTimestamp', $item['ended_timestamp']);
+            }
+        }
+
+        return $item;
     }
 }
-
