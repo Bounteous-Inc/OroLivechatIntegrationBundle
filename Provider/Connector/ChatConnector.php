@@ -102,19 +102,13 @@ class ChatConnector extends AbstractConnector
             $this->getContext()
         );
 
-        $completed = Status::STATUS_COMPLETED;
+        $repository = $this->registry->getRepository('OroIntegrationBundle:Channel');
 
-        $data = $this->registry
-            ->getRepository('OroIntegrationBundle:Channel')
-            ->
-
-        $status  = $this->registry
-            ->getRepository('OroIntegrationBundle:Channel')
-            ->getLastStatusForConnector(
-                $channel,
-                $this->getType(),
-                Status::STATUS_COMPLETED
-            );
+        $status  = $repository->getLastStatusForConnector(
+            $channel,
+            'chat',
+            Status::STATUS_COMPLETED
+        );
 
         $return = $status ? $status->getDate() : null;
 
