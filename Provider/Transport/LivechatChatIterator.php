@@ -65,6 +65,7 @@ class LivechatChatIterator extends AbstractLivechatIterator
                 $rowArray['custom_agent_name']           = isset($rowArray['agents'][0]->display_name)? $rowArray['agents'][0]->display_name: '';
                 $rowArray['custom_agent_email']          = isset($rowArray['agents'][0]->email)? $rowArray['agents'][0]->email: '';
                 $rowArray['custom_visitor_email']        = isset($rowArray['prechat_survey'][1]->value)? $rowArray['prechat_survey'][1]->value: '';
+                $rowArray['custom_chat_start_url']       = isset($rowArray['chat_start_url'])? $rowArray['chat_start_url']: '';
 
                 $rows[] = $rowArray;
             }

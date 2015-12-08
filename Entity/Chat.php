@@ -16,7 +16,6 @@ use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
 /**
  * @ORM\Entity
- * @UniqueEntity("chatId")
  * @ORM\Table(
  *      name="demacmedia_livechat_chat"
  * )
@@ -42,8 +41,6 @@ class Chat
      */
     protected $id;
 
-    protected $remoteId;
-
     /**
      * @var Contact
      *
@@ -51,7 +48,6 @@ class Chat
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $contact;
-
 
     /**
      * @var Account
@@ -80,12 +76,14 @@ class Chat
      *              "label"="Chat ID",
      *              "plural_label"="Chats ID",
      *              "description"="Chat ID"
+     *          },
+     *          "importexport"={
+     *              "identity"=true
      *          }
      *      }
      * )
      */
     protected $chatId;
-
 
     /**
      * @var string
@@ -757,7 +755,6 @@ class Chat
         return $this;
     }
 
-
     /**
      * @ORM\PrePersist
      */
@@ -766,6 +763,7 @@ class Chat
         $this->createdAt = $this->createdAt ? : new \DateTime('now', new \DateTimeZone('UTC'));
         $this->updatedAt = clone $this->createdAt;
     }
+
     /**
      * @ORM\PreUpdate
      */
@@ -773,6 +771,7 @@ class Chat
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
+
     /**
      * @return string
      */
@@ -781,21 +780,6 @@ class Chat
         return (string)$this->getTitle();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRemoteId()
-    {
-        return $this->remoteId;
-    }
-
-    /**
-     * @param mixed $remoteId
-     */
-    public function setRemoteId($remoteId)
-    {
-        $this->remoteId = $remoteId;
-    }
 
     /**
      * @return string
@@ -811,5 +795,21 @@ class Chat
     public function setChatVisitorRegion($chatVisitorRegion)
     {
         $this->chatVisitorRegion = $chatVisitorRegion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChatStartUrl()
+    {
+        return $this->chatStartUrl;
+    }
+
+    /**
+     * @param string $chatStartUrl
+     */
+    public function setChatStartUrl($chatStartUrl)
+    {
+        $this->chatStartUrl = $chatStartUrl;
     }
 }

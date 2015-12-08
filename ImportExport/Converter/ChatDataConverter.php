@@ -30,7 +30,7 @@ class ChatDataConverter extends AbstractTableDataConverter
             'started_timestamp'             => 'chatStartedTimestamp',
             'ended_timestamp'               => 'chatEndedTimestamp',
             'ended'                         => 'chatEnded',
-            'chat_start_url'                => 'chatStartUrl'
+            'custom_chat_start_url'         => 'chatStartUrl'
         ];
 
         return $rules;

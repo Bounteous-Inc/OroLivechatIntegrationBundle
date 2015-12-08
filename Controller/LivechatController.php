@@ -2,9 +2,11 @@
 
 namespace DemacMedia\Bundle\OroLivechatIntegrationBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use LiveChat\Api\Client as LiveChat;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
@@ -13,11 +15,15 @@ class LivechatController extends Controller
 {
     protected $liveChat;
 
+
     /**
-     * @Route("/", name="demac_oro_livechat_integration_homepage")
+     * @Route("/", name="demacmedia_livechat_chat_index")
+     * @Template
      */
-    public function indexAction()
-    {
+    public function indexAction(Request $request) {
+        return $this->render('DemacMediaOroLivechatIntegrationBundle:LivechatInc:index.html.twig');
+
+        /*
         $response = new Response();
 
         $response->setContent(
@@ -30,6 +36,18 @@ class LivechatController extends Controller
         $response->headers->addCacheControlDirective('must-revalidate', true);
 
         return $response;
+        */
+    }
+
+
+
+    /**
+     * @Route("/view/{chatId}", name="demacmedia_livechat_chat_view")
+     */
+    public function viewChatAction($chatId) {
+
+        die($chatId);
+
     }
 
 
@@ -38,6 +56,7 @@ class LivechatController extends Controller
      */
     public function getChatsAction()
     {
+        /*
         $apiUser = $this->container->getParameter('demacmedia.livechat.user');
         $apiKey  = $this->container->getParameter('demacmedia.livechat.key');
 
@@ -58,6 +77,7 @@ class LivechatController extends Controller
                 true
             )
         );
+        */
     }
 
     protected function liveChatLogin($user, $key)
@@ -89,6 +109,8 @@ class LivechatController extends Controller
 
         return $totalChats;
     }
+
+
 
 
 }

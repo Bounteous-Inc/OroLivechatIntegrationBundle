@@ -58,7 +58,7 @@ abstract class AbstractLivechatIterator implements \Iterator
 
     protected $totalChats = 0;
 
-    protected $currentPage = 388;
+    protected $currentPage = 0;
 
     protected $currentChat = 0;
 

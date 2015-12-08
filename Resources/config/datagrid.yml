@@ -1,0 +1,111 @@
+datagrid:
+    demacmedia-livechat-chats:
+        source:
+            type: orm
+            query:
+                select:
+                    - livechatinc.id
+                    - livechatinc.chatId
+                    - livechatinc.chatVisitorName
+                    - livechatinc.chatVisitorEmail
+                    - livechatinc.chatVisitorIp
+                    - livechatinc.chatVisitorCity
+                    - livechatinc.chatVisitorRegion
+                    - livechatinc.chatVisitorCountry
+                    - livechatinc.chatVisitorCountryCode
+                    - livechatinc.chatVisitorTimezone
+                    - livechatinc.chatAgentName
+                    - livechatinc.chatAgentEmail
+                    - livechatinc.chatDuration
+                    - livechatinc.chatStarted
+                    - livechatinc.chatEnded
+                    - livechatinc.chatStartUrl
+                    - livechatinc.createdAt
+                from:
+                    - { table: DemacMediaOroLivechatIntegrationBundle:Chat, alias: livechatinc }
+        columns:
+            chatStarted:
+                label: 'Chat Started At'
+                frontend_type: datetime
+            chatId:
+                label: 'Chat ID'
+            chatVisitorName:
+                label: 'Visitor Name'
+            chatVisitorEmail:
+                label: 'Visitor Email'
+                frontend_type: html
+            chatVisitorCity:
+                label: 'Visitor City'
+            chatVisitorRegion:
+                label: 'Visitor Region'
+            chatVisitorCountry:
+                label: 'Visitor Country'
+            chatVisitorTimezone:
+                label: 'Visitor Timezone'
+            chatAgentName:
+                label: 'Agent Name'
+            chatAgentEmail:
+                label: 'Agent Email'
+                frontend_type: html
+            chatStartUrl:
+                label: 'Start URL'
+                frontend_type: html
+            chatVisitorIp:
+                label: 'Visitor IP'
+            chatEnded:
+                label: 'Chat Ended At'
+                frontend_type: datetime
+        filters:
+            columns:
+                chatVisitorName:
+                    type: string
+                    data_name: livechatinc.chatVisitorName
+                chatVisitorEmail:
+                    type: string
+                    data_name: livechatinc.chatVisitorEmail
+                chatVisitorCity:
+                    type: string
+                    data_name: livechatinc.chatVisitorCity
+                chatAgentName:
+                    type: string
+                    data_name: livechatinc.chatAgentName
+                chatAgentEmail:
+                    type: string
+                    data_name: livechatinc.chatAgentEmail
+                chatStarted:
+                    type: datetime
+                    data_name: livechatinc.chatStarted
+                chatEnded:
+                    type: datetime
+                    data_name: livechatinc.chatEnded
+                chatId:
+                    type: string
+                    data_name: livechatinc.chatId
+                chatVisitorIp:
+                    type: string
+                    data_name: livechatinc.chatVisitorIp
+
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: demacmedia_livechat_chat_view
+                params:
+                    - chatId
+        sorters:
+            columns:
+                chatStarted:
+                    data_name: livechatinc.chatStarted
+                chatEnded:
+                    data_name: livechatinc.chatEnded
+
+        sorters:
+            default:
+                chatStarted: DESC
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          eye-open
+                rowAction:     true
