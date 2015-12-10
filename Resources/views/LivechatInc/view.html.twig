@@ -1,7 +1,23 @@
-<p><strong>LivechatInc</strong> Chats</p>
-<hr />
-<p>
-    test test test test test test test test test test test test test
-    test test test test test test test test test test test test test
-    test test test test test test test test test test
-</p>
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set pageTitle = 'LivechatInc Chat Transcript' %}
+
+{% block content %}
+    <div>
+        <p>
+            <h4>
+                <strong>LivechatInc</strong> Transcript for the chat: NXNXNXNXNXNX
+            </h4>
+        </p>
+    </div>
+    <div>
+        <table class="table table-hover">
+            <tr>
+                <td>
+                    [HH:ii:ss] <strong>Name</strong>
+                    msg
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock content %}

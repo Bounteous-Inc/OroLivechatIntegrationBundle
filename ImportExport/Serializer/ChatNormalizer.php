@@ -8,12 +8,13 @@ use Oro\Bundle\ImportExportBundle\Field\FieldHelper;
 use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\ConfigurableEntityNormalizer;
 
 use DemacMedia\Bundle\OroLivechatIntegrationBundle\Entity\Chat;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class ChatNormalizer extends ConfigurableEntityNormalizer
 {
     /** @var RegistryInterface */
     protected $registry;
-
+    
     /**
      * @param FieldHelper       $fieldHelper
      * @param RegistryInterface $registry
@@ -50,6 +51,8 @@ class ChatNormalizer extends ConfigurableEntityNormalizer
 
         $integration = $this->getIntegrationFromContext($context);
         $chat->setChannel($integration);
+        $chat->setOrganization($integration->getOrganization());
+        $chat->setOwner($integration->getDefaultUserOwner());
 
         return $chat;
     }
@@ -66,8 +69,10 @@ class ChatNormalizer extends ConfigurableEntityNormalizer
             throw new \LogicException('Context should contain reference to channel');
         }
 
-        return $this->registry
+        $return = $this->registry
             ->getRepository('OroIntegrationBundle:Channel')
             ->getOrLoadById($context['channel']);
+
+        return $return;
     }
 }

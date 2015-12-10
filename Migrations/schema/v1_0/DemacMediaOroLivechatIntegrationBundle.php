@@ -28,6 +28,8 @@ class DemacMediaOroLivechatIntegrationBundle implements Migration
 
         $table->addColumn('id',         'integer', ['autoincrement' => true]);
         $table->addColumn('channel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('user_owner_id',   'integer', ['notnull' => false]);
 
         $table->addColumn('chat_type',                  'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('chat_id',                    'string', ['notnull' => true, 'length' => 32]);
@@ -71,6 +73,8 @@ class DemacMediaOroLivechatIntegrationBundle implements Migration
         $table->addIndex(['chat_ended_timestamp'], 'IDX_LC_ENDED_TIMESTAMP', []);
         $table->addIndex(['chat_ended'],        'IDX_LC_ENDED', []);
         $table->addIndex(['chat_start_url'],        'IDX_LC_START_URL', []);
+        $table->addIndex(['organization_id'], 'IDX_LC_ORGANIZATION', []);
+        $table->addIndex(['user_owner_id'],   'IDX_LC_USER_OWNER', []);
 
         $table = $schema->getTable('demacmedia_livechat_chat');
         $table->addForeignKeyConstraint(
@@ -78,6 +82,18 @@ class DemacMediaOroLivechatIntegrationBundle implements Migration
             ['channel_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => 'SET NULL']
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_user'),
+            ['user_owner_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => 'SET NULL']
         );
     }
 }

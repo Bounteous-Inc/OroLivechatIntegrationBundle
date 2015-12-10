@@ -21,9 +21,15 @@ datagrid:
                     - livechatinc.chatEnded
                     - livechatinc.chatStartUrl
                     - livechatinc.createdAt
+                    - dataChannel.name as channelName
                 from:
                     - { table: DemacMediaOroLivechatIntegrationBundle:Chat, alias: livechatinc }
+                join:
+                    left:
+                        - { join: livechatinc.channel, alias: dataChannel }
         columns:
+            channelName:
+                label: 'Channel'
             chatStarted:
                 label: 'Chat Started At'
                 frontend_type: datetime
@@ -55,6 +61,7 @@ datagrid:
             chatEnded:
                 label: 'Chat Ended At'
                 frontend_type: datetime
+
         filters:
             columns:
                 chatVisitorName:
@@ -84,6 +91,14 @@ datagrid:
                 chatVisitorIp:
                     type: string
                     data_name: livechatinc.chatVisitorIp
+                channelName:
+                    type:      entity
+                    data_name: channel.id
+                    options:
+                        field_options:
+                            class: OroIntegrationBundle:Channel
+                            property: name
+                            translatable_options: false
 
         properties:
             id: ~

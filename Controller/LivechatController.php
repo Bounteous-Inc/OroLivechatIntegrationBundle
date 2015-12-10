@@ -22,63 +22,18 @@ class LivechatController extends Controller
      */
     public function indexAction(Request $request) {
         return $this->render('DemacMediaOroLivechatIntegrationBundle:LivechatInc:index.html.twig');
-
-        /*
-        $response = new Response();
-
-        $response->setContent(
-            base64_decode('R0lGODdhAQABAIAAAPxqbAAAACwAAAAAAQABAAACAkQBADs=')
-        );
-
-        $response->headers->set('Content-Type', 'image/gif');
-        $response->setPrivate();
-        $response->headers->addCacheControlDirective('no-cache', true);
-        $response->headers->addCacheControlDirective('must-revalidate', true);
-
-        return $response;
-        */
     }
 
 
 
     /**
      * @Route("/view/{chatId}", name="demacmedia_livechat_chat_view")
+     * @Template
      */
     public function viewChatAction($chatId) {
-
-        die($chatId);
-
+        return $this->render('DemacMediaOroLivechatIntegrationBundle:LivechatInc:view.html.twig');
     }
 
-
-    /**
-     * @Route("/chats", name="demac_oro_livechat_integration_get_chats")
-     */
-    public function getChatsAction()
-    {
-        /*
-        $apiUser = $this->container->getParameter('demacmedia.livechat.user');
-        $apiKey  = $this->container->getParameter('demacmedia.livechat.key');
-
-        $liveChatApi = $this->liveChatLogin(
-            $apiUser,
-            $apiKey
-        );
-
-        $totalChats = $this->getTotalChats();
-
-        $transcripts = $this->liveChat->chats->get([
-            'value' => 'foo@example.org'
-        ]);
-
-        return new Response(
-            print_r(
-                $transcripts,
-                true
-            )
-        );
-        */
-    }
 
     protected function liveChatLogin($user, $key)
     {
@@ -110,7 +65,21 @@ class LivechatController extends Controller
         return $totalChats;
     }
 
+    /**
+     * @return array LivechatIncCredentials
+     */
+    protected function loadLivechatIncConfig() {
+        try {
+            $wufooConfig = $this
+                ->getDoctrine()
+                ->getRepository('DemacMediaOroLivechatIntegrationBundle:WufooCredentials')
+                ->findAll();
 
-
-
+            if ($wufooConfig) {
+                return $wufooConfig;
+            }
+        } catch( \Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

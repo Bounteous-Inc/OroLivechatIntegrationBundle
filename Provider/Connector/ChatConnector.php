@@ -9,7 +9,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Status;
 use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector;
 use Oro\Bundle\IntegrationBundle\Logger\LoggerStrategy;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
-
+use Oro\Bundle\IntegrationBundle\Exception\RuntimeException;
 
 class ChatConnector extends AbstractConnector
 {
@@ -84,13 +84,7 @@ class ChatConnector extends AbstractConnector
      */
     protected function getConnectorSource()
     {
-        $lastChatEndedTimestampIntegrated = $this->getLastChatEndedTimestampIntegrated();
         return $this->transport->getChats($this->getLastSyncDate());
-    }
-
-    protected function getLastChatEndedTimestampIntegrated()
-    {
-
     }
 
     /**
@@ -98,22 +92,28 @@ class ChatConnector extends AbstractConnector
      */
     protected function getLastSyncDate()
     {
+        $return = null;
         $channel = $this->contextMediator->getChannel(
             $this->getContext()
         );
 
         $repository = $this->registry->getRepository('OroIntegrationBundle:Channel');
-
         $status  = $repository->getLastStatusForConnector(
             $channel,
             'chat',
             Status::STATUS_COMPLETED
         );
-
-        $return = $status ? $status->getDate() : null;
-
+        
+        if ($status) {
+            $data = $status->getData();
+            if (isset($data['endedTimestamp'])) {
+                $dateObject = new \DateTime();
+                $dateObject->setTimestamp($data['endedTimestamp']);
+                $return = $dateObject;
+            }
+        }
+        
         return $return;
-
     }
 
 
@@ -123,14 +123,22 @@ class ChatConnector extends AbstractConnector
     public function read()
     {
         $item = parent::read();
-
+        
         if (null !== $item && !$this->getSourceIterator()->valid()) {
             $invalidEntries = (int) self::getContext()->getErrorEntriesCount();
+            $addedEntries   = (int) self::getContext()->getAddCount();
+
             if ($invalidEntries < 1) {
                 $this->addStatusData('endedTimestamp', $item['ended_timestamp']);
+            } else {
+                if ($addedEntries < 1) {
+                    throw new RuntimeException('Stats: Synchronization completed but no new entries identified.');
+                } else {
+                    $this->addStatusData('endedTimestamp', $item['ended_timestamp']);
+                }
             }
         }
-
+        
         return $item;
     }
 }

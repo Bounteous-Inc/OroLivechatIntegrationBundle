@@ -52,10 +52,12 @@ class ImportStrategy extends ConfigurableAddOrReplaceStrategy implements
             }
 
             $entity = $this->processEntity($entity, true, true, $this->context->getValue('itemData'));
+            $this->context->incrementAddCount();
 
         } else {
             if ($this->logger) {
                 $this->logger->info('Ignoring existing ' .$entity->getChatId());
+                $this->context->incrementErrorEntriesCount();
             }
 
             return null;
@@ -72,5 +74,21 @@ class ImportStrategy extends ConfigurableAddOrReplaceStrategy implements
     protected function afterProcessEntity($entity)
     {
         return parent::afterProcessEntity($entity);
+    }
+
+
+    /**
+     * Increment context counters.
+     *
+     * @param $entity
+     */
+    protected function updateContextCounters($entity)
+    {
+        $identifier = $this->databaseHelper->getIdentifier($entity);
+        if ($identifier) {
+            $this->context->incrementReplaceCount();
+        } else {
+            $this->context->incrementAddCount();
+        }
     }
 }

@@ -96,7 +96,9 @@ class LivechatTransport implements TransportInterface
         $params = [];
 
         if ($lastUpdatedAt) {
+            $dateNow = new \DateTime();
             $params['date_from'] = sprintf("%s", $lastUpdatedAt->format('Y-m-d'));
+            $params['date_to']   = sprintf("%s", $dateNow->format('Y-m-d'));
         }
 
         $chats = new LivechatChatIterator($this->client, 'chats', $params);
@@ -104,6 +106,3 @@ class LivechatTransport implements TransportInterface
         return $chats;
     }
 }
-
-
-

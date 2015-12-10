@@ -4,6 +4,7 @@ namespace DemacMedia\Bundle\OroLivechatIntegrationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -389,6 +390,45 @@ class Chat
     protected $updatedAt;
 
 
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          },
+     *          "entity"={
+     *              "label"="Owner",
+     *              "plural_label"="Owners",
+     *              "description"="Owner"
+     *          }
+     *      }
+     * )
+     */
+    protected $owner;
+
+
+    /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          },
+     *          "entity"={
+     *              "label"="Organization",
+     *              "plural_label"="Organizations",
+     *              "description"="Organization"
+     *          }
+     *      }
+     * )
+     */
+    protected $organization;
 
 
     /**
@@ -399,6 +439,7 @@ class Chat
         return $this->id;
     }
 
+
     /**
      * @param int $id
      */
@@ -406,7 +447,6 @@ class Chat
     {
         $this->id = $id;
     }
-
 
 
     /**
@@ -811,5 +851,42 @@ class Chat
     public function setChatStartUrl($chatStartUrl)
     {
         $this->chatStartUrl = $chatStartUrl;
+    }
+
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
+
+    /**
+     * Get organization
+     *
+     * @return Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * Set organization
+     *
+     * @param Organization $organization
+     */
+    public function setOrganization(Organization $organization = null)
+    {
+        $this->organization = $organization;
     }
 }

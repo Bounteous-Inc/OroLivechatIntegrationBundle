@@ -4,6 +4,8 @@ namespace DemacMedia\Bundle\OroLivechatIntegrationBundle\Entity;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\UserBundle\Entity\User;
 
 trait IntegrationEntityTrait
 {
@@ -48,5 +50,5 @@ trait IntegrationEntityTrait
     {
         return $this->channel ? $this->channel->getName() : null;
     }
-}
 
+}

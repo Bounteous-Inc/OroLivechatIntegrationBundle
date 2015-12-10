@@ -159,16 +159,20 @@ abstract class AbstractLivechatIterator implements \Iterator
         $this->offset = null;
         $this->currentPage++;
 
-        $this->params = [
+        $this->params = array_merge($this->params, [
             'page' => $this->currentPage
-        ];
+        ]);
 
         $pageData = $this->loadPage($this->client, $this->params);
 
         $this->totalPages = $pageData->pages;
         $this->totalChats = $pageData->total;
 
-        echo PHP_EOL . "Loading page=[{$this->currentPage} of {$this->totalPages}] " .PHP_EOL;
+        if ($this->currentPage > $this->totalPages) {
+            echo PHP_EOL . "Processing last row and saving results..." .PHP_EOL;
+        } else {
+            echo PHP_EOL . "Loading page=[{$this->currentPage} of {$this->totalPages}] " . PHP_EOL;
+        }
 
         $this->firstLoaded = true;
         if ($pageData) {
