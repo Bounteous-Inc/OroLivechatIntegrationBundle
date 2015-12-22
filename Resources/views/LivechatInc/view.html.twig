@@ -3,21 +3,48 @@
 {% set pageTitle = 'LivechatInc Chat Transcript' %}
 
 {% block content %}
-    <div>
+    <div class="container-fluid">
         <p>
             <h4>
-                <strong>LivechatInc</strong> Transcript for the chat: NXNXNXNXNXNX
+                <a href="{{ path('demacmedia_livechat_chat_index') }}">
+                All Livechats</a>
+                | Chat: {{ transcript.id }}
             </h4>
         </p>
     </div>
-    <div>
-        <table class="table table-hover">
-            <tr>
-                <td>
-                    [HH:ii:ss] <strong>Name</strong>
-                    msg
-                </td>
-            </tr>
-        </table>
+
+    <div class="container-fluid">
+        <div>
+            <blockquote>
+                <strong>Name:</strong> {{ transcript.visitor.name|default('anonymous') }} <br />
+                <strong>Email:</strong> {{ transcript.visitor.email|default('') }}<br />
+                <strong>IP:</strong> {{ transcript.visitor.ip|default('') }}<br />
+                <strong>City:</strong> {{ transcript.visitor.city|default('') }}<br />
+                <strong>Region:</strong> {{ transcript.visitor.region|default('') }}<br />
+                <strong>Country:</strong> {{ transcript.visitor.country|default('') }}<br />
+                <strong>Timezone:</strong> {{ transcript.visitor.timezone|default('') }}<br />
+                <strong>Chat duration:</strong> {{ transcript.duration|default('0') }} seconds
+            </blockquote>
+        </div>
+
+        <div>
+            <table class="table">
+            {% for key, value in transcript.events %}
+                {% if (value.user_type != 'agent') %}
+                    <tr class="info">
+                {% else %}
+                    <tr>
+                {% endif %}
+                    <td>
+                    [{{ value.timestamp|date("m/d/Y H:i:s") }}]
+                        {% if (value.type == 'message') %}
+                            <strong>{{ value.author_name|default('') }}</strong>:
+                        {% endif %}
+                        {{ value.text }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
     </div>
 {% endblock content %}

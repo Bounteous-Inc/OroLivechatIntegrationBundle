@@ -9,6 +9,6 @@ oro_menu_config:
                 activities_tab:
                     children:
                         demacmedia_livechat_chat_index: ~
-
 oro_titles:
-    demacmedia_livechat_chat_index: ~
+    demacmedia_livechat_chat_index: 'Livechat'
+    demacmedia_livechat_chat_view: 'View Livechat'

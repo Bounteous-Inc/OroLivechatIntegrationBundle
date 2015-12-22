@@ -103,7 +103,7 @@ class ChatConnector extends AbstractConnector
             'chat',
             Status::STATUS_COMPLETED
         );
-        
+
         if ($status) {
             $data = $status->getData();
             if (isset($data['endedTimestamp'])) {
@@ -112,7 +112,7 @@ class ChatConnector extends AbstractConnector
                 $return = $dateObject;
             }
         }
-        
+
         return $return;
     }
 
@@ -122,23 +122,33 @@ class ChatConnector extends AbstractConnector
      */
     public function read()
     {
+        static $countIteractions = 0;
+        static $endedTimestamp = 0;
+
         $item = parent::read();
-        
+
+        if (isset($item['ended_timestamp'])) {
+            if ($countIteractions < 1) {
+                $endedTimestamp = $item['ended_timestamp'];
+                $countIteractions++;
+            }
+        }
+
         if (null !== $item && !$this->getSourceIterator()->valid()) {
             $invalidEntries = (int) self::getContext()->getErrorEntriesCount();
             $addedEntries   = (int) self::getContext()->getAddCount();
 
             if ($invalidEntries < 1) {
-                $this->addStatusData('endedTimestamp', $item['ended_timestamp']);
+                $this->addStatusData('endedTimestamp', $endedTimestamp);
             } else {
                 if ($addedEntries < 1) {
                     throw new RuntimeException('Stats: Synchronization completed but no new entries identified.');
                 } else {
-                    $this->addStatusData('endedTimestamp', $item['ended_timestamp']);
+                    $this->addStatusData('endedTimestamp', $endedTimestamp);
                 }
             }
         }
-        
+
         return $item;
     }
 }

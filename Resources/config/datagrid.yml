@@ -113,10 +113,9 @@ datagrid:
                     data_name: livechatinc.chatStarted
                 chatEnded:
                     data_name: livechatinc.chatEnded
-
-        sorters:
             default:
                 chatStarted: DESC
+
         actions:
             view:
                 type:          navigate
