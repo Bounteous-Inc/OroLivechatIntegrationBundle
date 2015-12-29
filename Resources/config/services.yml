@@ -1,0 +1,24 @@
+parameters:
+    demacmedia.livechat.provider.livechat_channel_type.class:    DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\LivechatChannelType
+    demacmedia.livechat.provider.livechat_transport.class:       DemacMedia\Bundle\OroLivechatIntegrationBundle\Provider\Transport\LivechatTransport
+    demacmedia.livechat.form.type.livechat_transport.type.class: DemacMedia\Bundle\OroLivechatIntegrationBundle\Form\Type\LivechatTransportType
+
+services:
+    demacmedia.livechat.provider.livechat_channel_type:
+        class: %demacmedia.livechat.provider.livechat_channel_type.class%
+        tags:
+            - { name: oro_integration.channel, type: live_chat }
+
+    demacmedia.livechat.provider.livechat_transport:
+        class: %demacmedia.livechat.provider.livechat_transport.class%
+        arguments:
+            - @demacmedia.livechat.client_factory
+        tags:
+            - { name: oro_integration.transport, type: rest, channel_type: live_chat }
+
+    demacmedia.livechat.form.transport.type:
+        class: %demacmedia.livechat.form.type.livechat_transport.type.class%
+        arguments:
+            - @demacmedia.livechat.provider.livechat_transport
+        tags:
+            - { name: form.type, alias: demacmedia_livechat_form_rest_transport_type }

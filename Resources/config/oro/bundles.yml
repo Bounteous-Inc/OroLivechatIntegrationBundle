@@ -1,0 +1,3 @@
+bundles:
+    - { name: DemacMedia\Bundle\OroLivechatIntegrationBundle\DemacMediaOroLivechatIntegrationBundle, priority: 51 }
+    

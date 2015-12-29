@@ -1,0 +1,9 @@
+security:
+    firewalls:
+        livechat_integration:
+            pattern: ^/livechat/integration/*
+            provider:  chain_provider
+            anonymous: true
+            
+    access_control:
+        - { path: ^/livechat/integration/, role: IS_AUTHENTICATED_ANONYMOUSLY }

@@ -1,0 +1,9 @@
+demac_oro_livechat_integration:
+    resource:     "@DemacMediaOroLivechatIntegrationBundle/Controller/LivechatController.php"
+    type:         annotation
+    prefix:       /livechat
+
+demac_livechatintegration_bundle:
+    resource:     "@DemacMediaOroLivechatIntegrationBundle/Controller/LivechatIntegrationController.php"
+    type:         annotation
+    prefix:       /anonymous

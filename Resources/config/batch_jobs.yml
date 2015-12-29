@@ -1,0 +1,16 @@
+connector:
+    name: oro_importexport
+    jobs:
+        livechat_chat_import:
+            title: "Customer import from LivechatInc"
+            type:  import
+            steps:
+                import:
+                    title:     import
+                    class:     Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    demacmedia.livechat.provider.chat_connector
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 25

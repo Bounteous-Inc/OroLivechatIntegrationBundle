@@ -1,0 +1,14 @@
+oro_menu_config:
+    items:
+        demacmedia_livechat_chat_index:
+            label: 'LivechatInc Chats'
+            route: demacmedia_livechat_chat_index
+    tree:
+        application_menu:
+            children:
+                activities_tab:
+                    children:
+                        demacmedia_livechat_chat_index: ~
+oro_titles:
+    demacmedia_livechat_chat_index: 'Livechat'
+    demacmedia_livechat_chat_view: 'View Livechat'
