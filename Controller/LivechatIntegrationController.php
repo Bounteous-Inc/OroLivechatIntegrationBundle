@@ -63,9 +63,6 @@ class LivechatIntegrationController extends Controller
                     'fields'      => $fields
                 ));
 
-               var_export($fields);
-               die();
-
             $this->responseToLivechatInc($contentData->visitor->id, $curlFields);
         }
         $return = 'ok';
