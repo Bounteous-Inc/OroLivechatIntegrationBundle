@@ -1,5 +1,5 @@
 {
-    "name": "demacmedia/oro-livechat-integration-bundle",
+    "name": "DemacMedia/oro-livechat-integration-bundle",
     "description": "LivechatInc Integration to use in OroCRM",
     "homepage": "https://github.com/DemacMedia/OroLivechatIntegrationBundle.git",
     "license": "MIT",
