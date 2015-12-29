@@ -59,7 +59,7 @@ class LivechatChatIterator extends AbstractLivechatIterator
                 $rowArray['custom_visitor_ip']           = isset($rowArray['visitor']->ip)? $rowArray['visitor']->ip: '';
                 $rowArray['custom_visitor_city']         = isset($rowArray['visitor']->city)? $rowArray['visitor']->city: '';
                 $rowArray['custom_visitor_region']       = isset($rowArray['visitor']->region)? $rowArray['visitor']->region: '';
-                $rowArray['custom_visitor_country']      = isset($rowArray['visitor']->country)? $rowArray['visitor']->region: '';
+                $rowArray['custom_visitor_country']      = isset($rowArray['visitor']->country)? $rowArray['visitor']->country: '';
                 $rowArray['custom_visitor_country_code'] = isset($rowArray['visitor']->country_code)? $rowArray['visitor']->country_code: '';
                 $rowArray['custom_visitor_timezone']     = isset($rowArray['visitor']->timezone)? $rowArray['visitor']->timezone: '';
                 $rowArray['custom_agent_name']           = isset($rowArray['agents'][0]->display_name)? $rowArray['agents'][0]->display_name: '';

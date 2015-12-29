@@ -29,21 +29,30 @@ class LivechatIntegrationController extends Controller
         }
 
         if ($contentData->event_type === 'chat_started') {
-
             /**
              * Todo: Get customer information based on email
-             *
-                if (isset($contentData->visitor->email)){
-                    $email = $contentData->visitor->email;
-                } else {
-                    $email = '';
-                }
-            */
+             */
+                #   if (isset($contentData->visitor->email)){
+                #       $email = $contentData->visitor->email;
+                #   } else {
+                #       $email = '';
+                #   }
 
                 $fields = array();
+                $visitor = $contentData->visitor;
+
+                $package = base64_encode(
+                    json_encode([
+                        'chat_id'       => $contentData->chat->id,
+                        'visitor_id'    => $contentData->visitor->id,
+                        'visitor_name'  => $contentData->visitor->name,
+                        'visitor_email' => $contentData->visitor->email
+                    ])
+                );
+
                 $fields[] = (object)array(
                     'name' => 'Create OroCRM Lead',
-                    'value' => $website. "/livechat/create-lead/" .$contentData->chat->id
+                    'value' => $website. "/livechat/create-lead/" .$package
                 );
 
                 $curlFields = http_build_query(array(

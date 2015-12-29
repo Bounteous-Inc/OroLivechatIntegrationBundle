@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use LiveChat\Api\Client as LiveChat;
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use OroCRM\Bundle\SalesBundle\Entity\Lead;
 
 class LivechatController extends Controller
 {
@@ -19,7 +20,8 @@ class LivechatController extends Controller
      * @Route("/", name="demacmedia_livechat_chat_index")
      * @Template
      */
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request)
+    {
         return $this->render('DemacMediaOroLivechatIntegrationBundle:LivechatInc:index.html.twig');
     }
 
@@ -28,7 +30,8 @@ class LivechatController extends Controller
      * @Route("/view/{chatId}", name="demacmedia_livechat_chat_view")
      * @Template
      */
-    public function viewChatAction($chatId) {
+    public function viewChatAction($chatId)
+    {
         try {
           $config = $this->loadLivechatIncConfig();
 
@@ -56,7 +59,9 @@ class LivechatController extends Controller
         }
     }
 
-    protected function loadChatTranscript(LiveChat $client, $chatId) {
+
+    protected function loadChatTranscript(LiveChat $client, $chatId)
+    {
         try {
             return $client->chats->getSingleChat($chatId);
         } catch (\Exception $e) {
@@ -66,39 +71,53 @@ class LivechatController extends Controller
 
 
     /**
-     * @Route("/create-lead/{chatId}", name="demacmedia_livechat_integration")
+     * @Route("/create-lead/{package}", name="demacmedia_livechat_integration")
      * @Template
      */
-    public function integrationAction($chatId) {
-
-        $this->createsLead($parameterss);
-
-        die('chatId: ' .$chatId);
-    }
-
-
-    /**
-     * @return array
-     */
-    protected function createLead($parameters)
+    public function integrationAction($package)
     {
-        $request = [
-            "lead" => [
-                'name'          => 'lead_name_'  . mt_rand(1, 500),
-                'firstName'     => 'first_name_' . mt_rand(1, 500),
-                'lastName'      => 'last_name_'  . mt_rand(1, 500),
-                'owner'         => '1',
-                'dataChannel'   => self::$dataChannel->getId()
-            ]
-        ];
-        $this->client->request(
-            'POST',
-            $this->getUrl('oro_api_post_lead'),
-            $request
+        try {
+            $package = (array) json_decode(
+                base64_decode($package)
             );
-        $result = $this->getJsonResponseContent($this->client->getResponse(), 201);
-        $request['id'] = $result['id'];
-        return $request;
+
+            if (
+                !isset($package['chat_id']) ||
+                !isset($package['visitor_id']) ||
+                !isset($package['visitor_name']) ||
+                !isset($package['visitor_email'])
+            ) {
+                throw new Exception('Bad package data format.');
+            }
+
+            $fullName = explode(' ', $package['visitor_name']);
+            if (sizeof($fullName) > 1){
+                $firstName = $fullName[0];
+                $lastName = end($fullName);
+            } else {
+                $firstName = $package['visitor_name'];
+                $lastName = '';
+            }
+
+            $leadName  = $package['visitor_name'];
+            $leadEmail = $package['visitor_email'];
+
+            $lead = new Lead();
+            $lead->setName($leadName);
+            $lead->setFirstName($firstName);
+            $lead->setLastName($lastName);
+            $lead->setEmail($leadName);
+            $lead->setSource('livechatinc');
+
+            $response = $this->forward('OroCRMSalesBundle:Lead:update', [
+                'entity' => $lead
+            ]);
+
+            return $response;
+
+        } catch( \Exception $e) {
+            return $e->getMessage();
+        }
     }
 
 
@@ -112,59 +131,27 @@ class LivechatController extends Controller
         }
     }
 
-
-     /**
-     * Generate WSSE authorization header
-     *
-     * @param string      $userName
-     * @param string      $userPassword
-     * @param string|null $nonce
-     *
-     * @return array
+    /**
+     * @return totalChats
      */
-    protected static function generateWsseAuthHeader(
-        $userName = self::USER_NAME,
-        $userPassword = self::USER_PASSWORD,
-        $nonce = null
-    ) {
-        if (null === $nonce) {
-            $nonce = uniqid();
-        }
-        $created  = date('c');
-        $digest   = base64_encode(sha1(base64_decode($nonce) . $created . $userPassword, true));
-        $wsseHeader = [
-            'CONTENT_TYPE' => 'application/json',
-            'HTTP_Authorization' => 'WSSE profile="UsernameToken"',
-            'HTTP_X-WSSE' => sprintf(
-                'UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
-                $userName,
-                $digest,
-                $nonce,
-                $created
-            )
-        ];
-        return $wsseHeader;
-    }
-
-
     protected function getTotalChats()
     {
         $totalChats = $this->liveChat->reports->get(
             'chats',
             ['total_chats']
         );
-
         return $totalChats;
     }
 
-
+    /**
+     * @return totalChats
+     */
     protected function getChats()
     {
         $totalChats = $this->liveChat->reports->get(
             'chats',
             ['total_chats']
         );
-
         return $totalChats;
     }
 
@@ -172,7 +159,8 @@ class LivechatController extends Controller
     /**
      * @return array LivechatIncCredentials
      */
-    protected function loadLivechatIncConfig() {
+    protected function loadLivechatIncConfig()
+    {
         $config = [
             'apiUser' => '',
             'apiKey'  => ''
