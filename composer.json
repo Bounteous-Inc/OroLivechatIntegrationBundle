@@ -23,8 +23,8 @@
     ],
     "require": {
         "php": ">=5.4.9",
-        "oro/platform": "1.x-dev",
-        "oro/crm": "1.x-dev",
+        "oro/platform": "1.*",
+        "oro/crm": "1.*",
         "livechat/api-client-php": "@dev"
     },
     "minimum-stability": "dev",
@@ -35,3 +35,4 @@
         }
     }
 }
+
