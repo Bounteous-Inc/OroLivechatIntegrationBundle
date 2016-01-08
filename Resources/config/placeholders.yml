@@ -4,5 +4,5 @@ placeholders:
             demacmedia_livechat_chats_view: ~
 items:
     demacmedia_livechat_chats_view:
-        template: DemacMediaOroLivechatIntegrationBundle:LivechatInc:view.html.twig
+        template: DemacMediaOroLivechatIntegrationBundle:LivechatInc:livechat-specific-user.html.twig
         applicable: @oro_ui.placeholder.filter->isInstanceOf($entity$, %orocrm_account.account.entity.class%)
