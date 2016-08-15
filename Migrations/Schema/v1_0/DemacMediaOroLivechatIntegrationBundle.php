@@ -34,7 +34,7 @@ class DemacMediaOroLivechatIntegrationBundle implements Migration
         $table->addColumn('chat_type',                  'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('chat_id',                    'string', ['notnull' => true, 'length' => 32]);
         $table->addColumn('chat_visitor_name',          'string', ['notnull' => false]);
-        $table->addColumn('chat_visitor_id',            'string', ['notnull' => true, 'length' => 32]);
+        $table->addColumn('chat_visitor_id',            'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('chat_visitor_ip',            'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('chat_visitor_email',         'string', ['notnull' => false]);
         $table->addColumn('chat_visitor_city',          'string', ['notnull' => false]);
